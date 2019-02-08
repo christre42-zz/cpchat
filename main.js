@@ -75,11 +75,15 @@ function addMessage() {
 }
 
 // Get chat
-function getChat(selectedChannel) {
-	Chat.find({ channel: selectedChannel }).exec(function(err, docs) {
-		console.log(docs[0].name)
-		console.log(docs[0].channel)
-		console.log(docs[0].message)
+function getChat(selectedChannel, resChat) {
+	let query = Chat.find({channel: selectedChannel })
+	query.exec().then(function (res) {
+		// success
+		console.log('DB Query excecuted - getChat ')
+		resChat(res)
+	}).catch(function(err) {
+		// error
+		console.log('Error, message: ' + err)
 	})
 }
 
@@ -99,6 +103,7 @@ function getUser(input, userFound) {
 	let query = User.find({name: input })
 	query.exec().then(function (user) {
 		// success
+		console.log('DB Query excecuted - getUser ')
 		userFound(user)
 	}).catch(function(err) {
 		// error
@@ -111,35 +116,25 @@ function getAllChannels(input, resChannels) {
 	let query = Channel.find({})
 	query.exec().then(function(channels) {
 		// success
+		console.log('DB Query excecuted - getAllChannels ')
 		resChannels(channels)
 	}).catch(function(err) {
 		// error
 		console.log('Error, message (get all channels): ' + err)
 	})
-	
-	// query.exec(function (err, docs) {
-	// 	docs.forEach(element => {
-	// 		console.log('CHANNELS______: ' + element.title)
-	// 	})
-	// 	// return docs
-	// })
 }
-
-
 
 
 // ==================================================================
 /// IPC HANDLING
 // ==================================================================
 
-
-
 // START UP - SEND ALL CHANNELS
 ipcMain.on('startup', function(event, arg) {
 	getAllChannels(arg, function(_allChannels) {
 		event.sender.send('channel_served', _allChannels);
 	})
-});
+})
 
 // LOGIN ATTEMPT - GET USER
 ipcMain.on('login', function(event, userinput) {
@@ -152,21 +147,14 @@ ipcMain.on('login', function(event, userinput) {
 	})
 })
 
-
-
-
-
+// SET CHAT BASED ON CURRENT CHANNEL
 ipcMain.on('getCurrentChannel', function(event, currentChannel) {
-	let query = Chat.find({channel: currentChannel })
-	query.exec().then(function (chat) {
-		// success
+	getChat(currentChannel, function(chat) {
 		if (chat.length === 0) {
 			event.sender.send('channel-chat', false)
+		} else {
+			event.sender.send('channel-chat', chat)
 		}
-		event.sender.send('channel-chat', chat)
-	}).catch(function(err) {
-		//error
-		console.log('Error, could not get current chat from channel: ' + err)
 	})
 })
 
@@ -181,9 +169,6 @@ function createWindow() {
 
 	// and load the index.html of the app.
 	mainWindow.loadFile('index.html')
-
-
-	// ipcMain.send('channels', _channels);
 
 	// Open the DevTools.
 	  mainWindow.webContents.openDevTools()

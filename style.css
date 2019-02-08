@@ -37,7 +37,12 @@ body {
     padding: 1rem;
 }
 .channel {
- padding: 0.5rem 1rem;   
+ padding: 0.5rem 1rem;
+ cursor: pointer;
+}
+.channel.isactive {
+    background-color: #80CBC4;
+    color: #333;
 }
 .right-panel {
     display: grid;
