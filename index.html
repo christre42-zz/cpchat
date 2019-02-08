@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <title>CP CHAT</title>
+</head>
+
+<body>
+
+    <div class="content">
+
+        <div class="loginwrapper">
+            <form onsubmit="event.preventDefault();login();">
+                <input type="text" name="name" id="loginname" autofocus>
+                <input type="submit" value="login">
+            </form>
+        </div>
+
+        <div class="left-panel">
+            <div class="profile">
+                Name
+            </div>
+            <div class="channels">
+                
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="channel-meta">
+                Name of active channel
+            </div>
+            <div class="chat">
+                
+            </div>
+            <div class="input">
+                <form>
+                    <input type="text" autofocus>
+                    <input type="submit" value="send">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

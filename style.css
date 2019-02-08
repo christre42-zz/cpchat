@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: "Arial", serif;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+}
+.loginwrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+.loginwrapper form {
+    max-width: 30rem;
+    margin: 0 auto;
+}
+.content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 100vh;
+}
+.left-panel {
+    background-color: #f7f7f7;
+    border-right: 1px solid #dedede;
+}
+.profile {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    padding: 1rem;
+}
+.channel {
+ padding: 0.5rem 1rem;   
+}
+.right-panel {
+    display: grid;
+    grid-template-rows: fit-content(100%) auto 2rem;
+}
+.channel-meta {
+    background-color: #1E88E5;
+    color: #fff;
+    padding: 1rem;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+}
+.chat {
+    overflow: scroll;
+    padding: 1rem;
+}
+.chat-item {
+    margin-bottom: 1rem;
+}
+.chat-date,
+.chat-name {
+    font-size: 0.9rem;
+    display: inline-block;
+}
+.chat-name {
+    font-weight: 600;
+    padding-right: 1rem;
+}
+
+.chat-date {
+    color: #4d4d4d;
+}
+.chat-message {
+    padding-top: 0.2rem;
+}

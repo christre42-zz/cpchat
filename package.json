@@ -1,0 +1,20 @@
+{
+  "name": "cp_chat",
+  "version": "1.0.0",
+  "description": "Internal chat application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Christian Rennemo",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^4.0.4"
+  },
+  "dependencies": {
+    "mongoose": "^5.4.10"
+  }
+}
