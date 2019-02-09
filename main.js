@@ -58,23 +58,19 @@ function createChannel(title, topic) {
 // Add message
 function addMessage(data, chatAdded) {
 	var thischat = mongoose.model('chat', chatSchema)
-	console.log('_____')
-	console.log(data)
-	console.log(data.name)
-	const newChat = new thischat({
-		name: +'"'+data.name+'"',
-		message: +'"'+data.message+'"',
-		date: +'"'+data.date+'"',
-		channel: +'"'+data.channel+'"'
+	var newChat = new thischat({
+		name: data.name,
+		message: data.message,
+		date: data.date,
+		channel: data.channel
 	})
-	console.log(newChat)
-	// newChat.save().then(function(res) {
-	// 	// sucess
-	// 	console.log('DB Query excecuted - addMessage ')
-	// 	chatAdded(res)
-	// }).catch(function(err) {
-	// 	console.log('Error, message: ' + err)
-	// })
+	newChat.save().then(function(res) {
+		// sucess
+		console.log('DB Query excecuted - addMessage ')
+		chatAdded(res)
+	}).catch(function(err) {
+		console.log('Error, message: ' + err)
+	})
 }
 
 // Get chat
@@ -163,7 +159,7 @@ ipcMain.on('getCurrentChannel', function(event, currentChannel) {
 // NEW MESSAGE IN CHAT/CHANNEL
 ipcMain.on('new-message', function(event, newChat) {
 	addMessage(newChat, function(response) {
-		console.log(response)
+		event.sender.send('post-message', response)
 	})
 })
 

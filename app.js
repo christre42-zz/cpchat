@@ -93,12 +93,20 @@ function setCurrentChannelByName(name) {
 function newMessage() {
 	let userInput = document.querySelector('#message')
 	let chatinfo = `{
-		"name" : `+ profileName.innerHTML +`,
-		"message" : `+ userInput.value +`,
-		"date" : 09.02.2019,
-		"channel" : `+ currentChannel.title +`,
+		"name": "`+ profileName.innerHTML +`",
+		"message": "`+ userInput.value +`",
+		"date": "09.02.2019",
+		"channel": "`+ currentChannel.title +`"
 	}`
 	userInput.value = ''
-	console.log(chatinfo)
-  ipcRenderer.send('new-message', chatinfo)
+	let chatObject = JSON.parse(chatinfo)
+  ipcRenderer.send('new-message', chatObject)
 }
+
+// Post new message
+ipcRenderer.on('post-message', function(arg, message) {
+	chatDiv.innerHTML += '<div class="chat-item"><div class="chat-name">'
+				+ message._doc.name + ':</div>'
+				+ '<div class="chat-date">' + message._doc.date + '</div>'
+				+ '<div class="chat-message">' + message._doc.message + '</div></div>'
+})
