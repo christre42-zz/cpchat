@@ -38,8 +38,8 @@
                 
             </div>
             <div class="input">
-                <form>
-                    <input type="text" autofocus>
+                <form onsubmit="event.preventDefault();newMessage();">
+                    <input type="text" id="message" autofocus>
                     <input type="submit" value="send">
                 </form>
             </div>

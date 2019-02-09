@@ -5,14 +5,13 @@ let channels = []
 
 // UI-components 
 const channelsDiv = document.querySelector('.channels')
-const profileDiv = document.querySelector('.profile')
+const profileName = document.querySelector('.profile')
 const channelMetaDiv = document.querySelector('.channel-meta')
 let chatDiv = document.querySelector('.chat')
 let allChannelsDivs = []
 
 // Startup
 ipcRenderer.send('startup', 'clean text, string')
-
 
 // Show all channels on start
 ipcRenderer.on('channel_served', function (arg, e) {
@@ -45,7 +44,7 @@ function login() {
 // Login accepted
 ipcRenderer.on('login_acepted', function (arg, user) {
   profile = user[0]._doc
-  profileDiv.innerHTML = profile.name
+  profileName.innerHTML = profile.name
   document.querySelector('.loginwrapper').style.display = 'none'
 })
 
@@ -65,22 +64,41 @@ ipcRenderer.on('channel-chat', function (arg, chat) {
 	}
 })
 
+// Click on channel-list
 function clickOnChannel(event) {
 	let selectedChannel = event.target.id
+	if (selectedChannel === currentChannel.title) return
+	chatDiv.innerHTML = 'Loading content from ' + selectedChannel + ', please wait.'
 	setCurrentChannelByName(selectedChannel)
 
   allChannelsDivs.forEach(function (el) {
     el.classList.remove('isactive')
 	})
+	
 	event.target.classList.add('isactive')
 	channelMetaDiv.innerHTML = 'channel: ' + currentChannel.title
 	ipcRenderer.send('getCurrentChannel', currentChannel.title)
 }
 
+// Set active channel
 function setCurrentChannelByName(name) {
 	for(i in channels) {
 		if(channels[i].title === name) {
 			currentChannel = channels[i]
 		}
 	}
+}
+
+// New message in chat/channel - Called inline in index.html
+function newMessage() {
+	let userInput = document.querySelector('#message')
+	let chatinfo = `{
+		"name" : `+ profileName.innerHTML +`,
+		"message" : `+ userInput.value +`,
+		"date" : 09.02.2019,
+		"channel" : `+ currentChannel.title +`,
+	}`
+	userInput.value = ''
+	console.log(chatinfo)
+  ipcRenderer.send('new-message', chatinfo)
 }

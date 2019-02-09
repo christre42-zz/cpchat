@@ -1,11 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const mongoose = require('mongoose')
 
-
 const Schema = mongoose.Schema;
 const dburl = 'mongodb://admin:etganskesjuktpassord1@ds223605.mlab.com:23605/cpchat'
 let mainWindow
-
 
 // Conect to DB (mLab)
 mongoose.connect(dburl, { useNewUrlParser: true }, (err) => {
@@ -47,8 +45,7 @@ function createUser(username) {
 
 // Create channel
 function createChannel(title, topic) {
-	const channel = new mongoose.model('channel', channelSchema)
-	var newChannel = new channel({
+	let newChannel = new Channel({
 		title: title,
 		topic: topic
 	})
@@ -59,19 +56,25 @@ function createChannel(title, topic) {
 }
 
 // Add message
-function addMessage() {
-	var chat = mongoose.model('chat', chatSchema)
-
-	var newMessage = new chat({
-		name: 'Endre',
-		message: 'Testdata lorem ipsum osv',
-		date: '20.02.2019',
-		channel: 'general'
+function addMessage(data, chatAdded) {
+	var thischat = mongoose.model('chat', chatSchema)
+	console.log('_____')
+	console.log(data)
+	console.log(data.name)
+	const newChat = new thischat({
+		name: +'"'+data.name+'"',
+		message: +'"'+data.message+'"',
+		date: +'"'+data.date+'"',
+		channel: +'"'+data.channel+'"'
 	})
-	newMessage.save(function (err) {
-		if (err) return handleError(err)
-		// saved
-	})
+	console.log(newChat)
+	// newChat.save().then(function(res) {
+	// 	// sucess
+	// 	console.log('DB Query excecuted - addMessage ')
+	// 	chatAdded(res)
+	// }).catch(function(err) {
+	// 	console.log('Error, message: ' + err)
+	// })
 }
 
 // Get chat
@@ -96,7 +99,6 @@ function getAllUsers() {
 		})
 	})
 }
-
 
 // Get user
 function getUser(input, userFound) {
@@ -155,6 +157,13 @@ ipcMain.on('getCurrentChannel', function(event, currentChannel) {
 		} else {
 			event.sender.send('channel-chat', chat)
 		}
+	})
+})
+
+// NEW MESSAGE IN CHAT/CHANNEL
+ipcMain.on('new-message', function(event, newChat) {
+	addMessage(newChat, function(response) {
+		console.log(response)
 	})
 })
 
