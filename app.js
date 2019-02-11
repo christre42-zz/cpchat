@@ -8,6 +8,7 @@ const channelsDiv = document.querySelector('.channels')
 const profileName = document.querySelector('.profile')
 const channelMetaDiv = document.querySelector('.channel-meta')
 let chatDiv = document.querySelector('.chat')
+let userInput = document.querySelector('#message')
 let allChannelsDivs = []
 
 // Startup
@@ -44,7 +45,8 @@ function login() {
 // Login accepted
 ipcRenderer.on('login_acepted', function (arg, user) {
   profile = user[0]._doc
-  profileName.innerHTML = profile.name
+	profileName.innerHTML = profile.name
+	userInput.focus()
   document.querySelector('.loginwrapper').style.display = 'none'
 })
 
@@ -91,7 +93,6 @@ function setCurrentChannelByName(name) {
 
 // New message in chat/channel - Called inline in index.html
 function newMessage() {
-	let userInput = document.querySelector('#message')
 	let chatinfo = `{
 		"name": "`+ profileName.innerHTML +`",
 		"message": "`+ userInput.value +`",

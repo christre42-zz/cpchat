@@ -1,3 +1,6 @@
+:root {
+    --primary: #1E88E5
+}
 * {
     box-sizing: border-box;
 }
@@ -46,10 +49,13 @@ body {
 }
 .right-panel {
     display: grid;
-    grid-template-rows: fit-content(100%) auto 2rem;
+    grid-template-rows: fit-content(100%) auto fit-content(100%);
 }
+
+/* Chat 
+================================*/
 .channel-meta {
-    background-color: #1E88E5;
+    background-color: var(--primary);
     color: #fff;
     padding: 1rem;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16);
@@ -76,4 +82,24 @@ body {
 }
 .chat-message {
     padding-top: 0.2rem;
+}
+
+/* User input
+============================== */
+form {
+    position: relative;
+}
+.input form input[type="text"] {
+    padding: 1rem;
+    width: 100%;
+}
+.input form input[type="submit"] {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: var(--primary);
+    color: #fff;
+    padding: 1rem 3rem;
+    margin: 0;
 }
